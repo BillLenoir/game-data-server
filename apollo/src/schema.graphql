@@ -1,0 +1,49 @@
+# When this changes
+# run
+# npx graphql-codegen  <=======================
+
+type Query {
+
+  # Return a list of games 
+  # sort: How to sort the list of games
+  # filter: How to filter the list of games
+  # cursor: Where to start to start the returned list
+  # limit: The number of games to return in the list
+  findGames(cursor: String!): GameConnection
+
+  # Return a single game specificed by title
+  game(title: String!): Game
+
+}
+
+type GameConnection {
+  totalCount: Int!
+  gameNumber: Int!
+  firstCursor: String
+  prevCursor: String
+  nextCursor: String
+  lastCursor: String
+  games: [GameNode]
+}
+
+type GameNode {
+  game: Game!
+  cursor: String!
+}
+
+type Game {
+  id: Int!
+  title: String
+  yearpublished: Int
+  thumbnail: String
+  publisher: String
+  description: String
+  gameown: Boolean
+  gamewanttobuy: Boolean
+  gameprevowned: Boolean
+  gamefortrade: Boolean
+}
+
+type ListSize {
+  gameCount: Int!
+}
