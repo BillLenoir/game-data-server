@@ -52,12 +52,15 @@ apollo.tasks.addTask("start:dev", {
   exec: "nodemon src/index.ts",
 });
 
-new web.ReactTypeScriptProject({
+const react = new web.ReactTypeScriptProject({
   parent: project,
   name: "react-server",
   defaultReleaseBranch: "main",
   outdir: "react",
   packageManager: project.package.packageManager,
 });
+
+react.addDeps("urql", "graphql", "react-router-dom");
+react.addDevDeps("@babel/plugin-proposal-private-property-in-object");
 
 project.synth();
