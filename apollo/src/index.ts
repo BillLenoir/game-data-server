@@ -2,7 +2,8 @@ import { readFileSync } from "fs";
 import { join as pathJoin } from "path";
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import { resolvers } from "./resolvers.js";
+import { dotenv } from "dotenv";
+import { resolvers } from "./resolvesV2.js";
 
 const typeDefs = readFileSync(pathJoin(".", "src", "schema.graphql"), "utf8");
 

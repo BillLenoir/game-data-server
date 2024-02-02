@@ -1,6 +1,7 @@
 # When this changes
 # run
-# npx graphql-codegen  <=======================
+# npx graphql-codegen  
+# from the directory above this <=======================
 
 type Query {
 
@@ -10,6 +11,7 @@ type Query {
   # cursor: Where to start to start the returned list
   # limit: The number of games to return in the list
   findGames(cursor: String!): GameConnection
+  findGamesV2(cursor: String!): GameConnectionV2
 
   # Return a single game specificed by title
   game(title: String!): Game
@@ -25,9 +27,22 @@ type GameConnection {
   lastCursor: String
   games: [GameNode]
 }
+type GameConnectionV2 {
+  totalCount: Int!
+  gameNumber: Int!
+  firstCursor: String
+  prevCursor: String
+  nextCursor: String
+  lastCursor: String
+  games: [GameNodeV2]
+}
 
 type GameNode {
   game: Game!
+  cursor: String!
+}
+type GameNodeV2 {
+  game: GameV2!
   cursor: String!
 }
 
@@ -37,6 +52,19 @@ type Game {
   yearpublished: Int
   thumbnail: String
   publisher: String
+  description: String
+  gameown: Boolean
+  gamewanttobuy: Boolean
+  gameprevowned: Boolean
+  gamefortrade: Boolean
+}
+type GameV2 {
+  id: Int!
+  title: String!
+  yearpublished: Int
+  thumbnail: String
+  publisher: [String]
+  designer: [String]
   description: String
   gameown: Boolean
   gamewanttobuy: Boolean

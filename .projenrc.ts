@@ -14,6 +14,7 @@ const project = new monorepo.MonorepoTsProject({
 });
 
 project.addDevDeps("@10mi2/tms-projen-projects");
+project.package.addPackageResolutions("projen@^0.79.3");
 
 const apollo = new TmsTypeScriptAppProject({
   parent: project,
@@ -62,5 +63,60 @@ const react = new web.ReactTypeScriptProject({
 
 react.addDeps("urql", "graphql", "react-router-dom");
 react.addDevDeps("@babel/plugin-proposal-private-property-in-object");
+
+const dataPrep = new TmsTypeScriptAppProject({
+  parent: project,
+  name: "data-prep",
+  defaultReleaseBranch: "main",
+  outdir: "data-prep",
+  packageManager: project.package.packageManager,
+  esmSupportConfig: true,
+  tsconfigBaseStrictest: true,
+  tsconfig: {
+    compilerOptions: {
+      // exactOptionalPropertyTypes is too heavy handed, conflicts with prisma and pothos generated code
+      exactOptionalPropertyTypes: false,
+      // noPropertyAccessFromIndexSignature is too heavy handed as well
+      noPropertyAccessFromIndexSignature: false,
+    },
+  },
+  tsconfigDev: {
+    compilerOptions: {
+      esModuleInterop: true,
+      exactOptionalPropertyTypes: false,
+      noPropertyAccessFromIndexSignature: false,
+    },
+  },
+  gitignore: ["src/data/*", "src/.env"],
+});
+
+dataPrep.addDeps("node-fetch", "xml-js", "@aws-sdk/client-s3", "zod");
+
+const hydrateData = new TmsTypeScriptAppProject({
+  parent: project,
+  name: "hydrate-data",
+  defaultReleaseBranch: "main",
+  outdir: "hydrate-data",
+  packageManager: project.package.packageManager,
+  esmSupportConfig: true,
+  tsconfigBaseStrictest: true,
+  tsconfig: {
+    compilerOptions: {
+      // exactOptionalPropertyTypes is too heavy handed, conflicts with prisma and pothos generated code
+      exactOptionalPropertyTypes: false,
+      // noPropertyAccessFromIndexSignature is too heavy handed as well
+      noPropertyAccessFromIndexSignature: false,
+    },
+  },
+  tsconfigDev: {
+    compilerOptions: {
+      esModuleInterop: true,
+      exactOptionalPropertyTypes: false,
+      noPropertyAccessFromIndexSignature: false,
+    },
+  },
+});
+
+hydrateData.addDeps("zod", "sqlite3", "prisma");
 
 project.synth();

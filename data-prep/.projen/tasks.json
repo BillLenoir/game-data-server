@@ -110,15 +110,6 @@
         }
       ]
     },
-    "start:dev": {
-      "name": "start:dev",
-      "description": "Start the server in development mode",
-      "steps": [
-        {
-          "exec": "nodemon src/index.ts"
-        }
-      ]
-    },
     "test": {
       "name": "test",
       "description": "Run tests",
@@ -162,13 +153,13 @@
       },
       "steps": [
         {
-          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@graphql-codegen/cli,@graphql-codegen/typescript,@graphql-codegen/typescript-resolvers,@tsconfig/node18,@types/jest,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,constructs,esbuild,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,eslint,jest,jest-junit,nodemon,prettier,projen,ts-jest,typescript,@apollo/server,graphql,zod"
+          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@tsconfig/node18,@types/jest,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,constructs,esbuild,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,eslint,jest,jest-junit,prettier,projen,ts-jest,typescript,@aws-sdk/client-s3,node-fetch,xml-js,zod"
         },
         {
           "exec": "npm install"
         },
         {
-          "exec": "npm update @graphql-codegen/cli @graphql-codegen/typescript @graphql-codegen/typescript-resolvers @tsconfig/node18 @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser constructs esbuild eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint jest jest-junit nodemon prettier projen ts-jest typescript @apollo/server graphql zod"
+          "exec": "npm update @tsconfig/node18 @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser constructs esbuild eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint jest jest-junit prettier projen ts-jest typescript @aws-sdk/client-s3 node-fetch xml-js zod"
         },
         {
           "exec": "npx projen"

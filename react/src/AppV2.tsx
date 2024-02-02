@@ -32,32 +32,32 @@ const client = new Client({
 });
 
 const GamesQuery = gql`
-  query FindGames($cursor: String!) {
-    findGames(cursor: $cursor) {
-      totalCount
-      gameNumber
-      firstCursor
-      prevCursor
-      nextCursor
-      lastCursor
-      games {
-        cursor
-        game {
-          description
-          gamefortrade
-          gameown
-          gameprevowned
-          gamewanttobuy
-          id
-          publisher
-          thumbnail
-          title
-          yearpublished
-        }
+query FindGamesV2($cursor: String!) {
+  findGamesV2(cursor: $cursor) {
+    totalCount
+    gameNumber
+    firstCursor
+    prevCursor
+    nextCursor
+    lastCursor
+    games {
+      game {
+        id
+        title
+        yearpublished
+        thumbnail
+        publisher
+        designer
+        description
+        gameown
+        gamewanttobuy
+        gameprevowned
+        gamefortrade
       }
+      cursor
     }
   }
-`;
+}`;
 
 const sendGamesQuery = (cursor: string) => {
   const [result, _reexecuteQuery] = useQuery({
@@ -82,63 +82,71 @@ const sendGamesQuery = (cursor: string) => {
     );
   }
 
-  totalCount = data.findGames.totalCount;
-  from = data.findGames.gameNumber + 1;
+  const returnedGames = data.findGamesV2;
+  console.log(returnedGames);
+
+  totalCount = returnedGames.totalCount;
+  from = returnedGames.gameNumber + 1;
   to =
     from + limit - 1 <= totalCount
-      ? data.findGames.gameNumber + limit
+      ? returnedGames.gameNumber + limit
       : totalCount;
-  firstCursor = data.findGames.firstCursor;
-  prevCursor = data.findGames.prevCursor;
-  nextCursor = data.findGames.nextCursor;
-  lastCursor = data.findGames.lastCursor;
+  firstCursor = returnedGames.firstCursor;
+  prevCursor = returnedGames.prevCursor;
+  nextCursor = returnedGames.nextCursor;
+  lastCursor = returnedGames.lastCursor;
 
   let gamesToDisplay = [];
   const bggBaseURL = 'https://boardgamegeek.com/boardgame/';
-  console.log(data.findGames.games.length);
-  for (let i = 0; i < data.findGames.games.length; i++) {
+  console.log(returnedGames.games.length);
+  for (let i = 0; i < returnedGames.games.length; i++) {
     let gameImage;
-    if (data.findGames.games[i].game.thumbnail !== null) {
+    if (returnedGames.games[i].game.thumbnail !== null) {
       gameImage = (
         <td>
           <img
-            src={data.findGames.games[i].game.thumbnail}
-            alt={'Cover image for' + data.findGames.games[i].game.title}
+            src={returnedGames.games[i].game.thumbnail}
+            alt={'Cover image for' + returnedGames.games[i].game.title}
           />
         </td>
       );
     } else {
       gameImage = <td className="noImage">No image for this game</td>;
     }
-    const gamePublisher = data.findGames.games[i].game.publisher
-      .split('xxxxx')
-      .join(', ');
-    const gameDescription = data.findGames.games[i].game.description
-      ? data.findGames.games[i].game.description
+    const gamePublisher = returnedGames.games[i].game.publisher.map((publisher: string) => {
+      return (<li>{publisher}</li>);
+    });
+
+    const gameDesigner = returnedGames.games[i].game.designer.map((designer: string) => {
+      return (<li>{designer}</li>);
+    });
+
+    const gameDescription = returnedGames.games[i].game.description
+      ? returnedGames.games[i].game.description
       : '';
-    const gameURL = bggBaseURL + data.findGames.games[i].game.id;
-    const gameTitle = data.findGames.games[i].game.title;
-    const gameYearPublished = data.findGames.games[i].game.yearpublished
-      ? data.findGames.games[i].game.yearpublished
+    const gameURL = bggBaseURL + returnedGames.games[i].game.id;
+    const gameTitle = returnedGames.games[i].game.title;
+    const gameYearPublished = returnedGames.games[i].game.yearpublished
+      ? returnedGames.games[i].game.yearpublished
       : '';
 
     let gameStatusArray: string[] = [];
-    if (data.findGames.games[i].game.gameown === true) {
+    if (returnedGames.games[i].game.gameown === true) {
       gameStatusArray.push('OWN');
     }
-    if (data.findGames.games[i].game.gamewanttobuy === true) {
+    if (returnedGames.games[i].game.gamewanttobuy === true) {
       gameStatusArray.push('WANT');
     }
-    if (data.findGames.games[i].game.gameprevowned === true) {
+    if (returnedGames.games[i].game.gameprevowned === true) {
       gameStatusArray.push('SOLD');
     }
-    if (data.findGames.games[i].game.gamefortrade === true) {
+    if (returnedGames.games[i].game.gamefortrade === true) {
       gameStatusArray.push('FOR SALE');
     }
     const gameStatus = gameStatusArray.join(', ');
 
     gamesToDisplay.push(
-      <tr key={data.findGames.games[i].game.id}>
+      <tr key={returnedGames.games[i].game.id}>
         {gameImage}
         <td>
           <h3>
@@ -147,8 +155,13 @@ const sendGamesQuery = (cursor: string) => {
           </h3>
           <p>{gameDescription}</p>
         </td>
+        <td className="orgs">
+          <h4>Publisher(s)</h4>
+          <ul>{gamePublisher}</ul>
+        </td>
         <td className="people">
-          <p>{gamePublisher}</p>
+          <h4>Designers(s)</h4>
+          <ul>{gameDesigner}</ul>
         </td>
       </tr>,
     );
@@ -171,7 +184,7 @@ const getEncodedCursor = (
   return encodedCursor;
 };
 
-export default function App() {
+export default function AppV2() {
   const cursor = getEncodedCursor(null, limit, 'ID', 'OWN');
   return (
     <BrowserRouter>

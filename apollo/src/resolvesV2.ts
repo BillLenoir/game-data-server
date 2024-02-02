@@ -1,10 +1,10 @@
 import { z } from "zod";
-import { games } from "./data/collectionData.js";
+import { gamesV2 } from "./data/gameOnlyData.js";
 import {
-  Game,
+  GameV2,
   Resolvers,
-  GameConnection,
-  GameNode,
+  GameConnectionV2,
+  GameNodeV2,
 } from "./resolvers-types.js";
 
 const CursorTypeZ = z.object({
@@ -19,15 +19,15 @@ type CursorType = z.infer<typeof CursorTypeZ>;
 // based on the game's relationship to Billy's collection.
 export const filterCheck = (filter: string) => {
   // Example cursor: "eyAibCI6IDUwLCAicyI6ICJJRCIsICJmIjogIk9XTiIgfSA="
-  let includedGame: (game: Game) => boolean = () => true;
+  let includedGame: (game: GameV2) => boolean = () => true;
   if (filter === "OWN") {
-    includedGame = (game: Game) => game.gameown === true;
+    includedGame = (game: GameV2) => game.gameown === true;
   } else if (filter === "WANT") {
-    includedGame = (game: Game) => game.gamewanttobuy === true;
+    includedGame = (game: GameV2) => game.gamewanttobuy === true;
   } else if (filter === "PREVOWN") {
-    includedGame = (game: Game) => game.gameprevowned === true;
+    includedGame = (game: GameV2) => game.gameprevowned === true;
   } else if (filter === "TRADE") {
-    includedGame = (game: Game) => game.gamefortrade === true;
+    includedGame = (game: GameV2) => game.gamefortrade === true;
   }
   return includedGame;
 };
@@ -50,12 +50,12 @@ const getEncodedCursor = (
 
 export const resolvers: Resolvers = {
   Query: {
-    findGames(_parent, args: { cursor: string }): GameConnection {
+    findGamesV2(_parent, args: { cursor: string }): GameConnectionV2 {
       // Parsing the arguments
       const input: CursorType = JSON.parse(atob(args.cursor));
 
       // Filtering the list of games
-      let filteredGames = games.filter(filterCheck(input.f));
+      let filteredGames = gamesV2.filter(filterCheck(input.f));
 
       // Sorting the list of games
       // Sort by ID
@@ -89,7 +89,7 @@ export const resolvers: Resolvers = {
       // Get the requested number of games, starting at the cursor's location
       let from: number = 0;
       let to: number = 0;
-      let cursorGame: Game | null = null;
+      let cursorGame: GameV2 | null = null;
       let limit: number = input.l;
       // If a game's ID has been included, see if it is in the
       // filtered and sorted list.
@@ -154,9 +154,9 @@ export const resolvers: Resolvers = {
       }
 
       // Assemble data for each returned game
-      const gameNodes: GameNode[] = [];
+      const gameNodes: GameNodeV2[] = [];
       let gameCursor;
-      let returnedGameNode: GameNode;
+      let returnedGameNode: GameNodeV2;
       for (let i = 0; i < returnedGames.length; i++) {
         const returnedGameId = returnedGames[i];
         if (returnedGameId === undefined) {
@@ -179,7 +179,7 @@ export const resolvers: Resolvers = {
       }
 
       // Assemble the whole payload
-      let returnObject: GameConnection = {
+      let returnObject: GameConnectionV2 = {
         totalCount: filteredGames.length,
         gameNumber: from,
         firstCursor: firstCursor,
@@ -194,8 +194,8 @@ export const resolvers: Resolvers = {
 
     // Return just a single game based on it's title. I haven't really worked
     // on this one yet.
-    game(_parent, args: { title: string }) {
-      return games.find((game) => game.title === args.title) ?? null;
-    },
+    // game(_parent, args: { title: string }) {
+    //   return games.find((game) => game.title === args.title) ?? null;
+    // },
   },
 };
