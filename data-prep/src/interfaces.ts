@@ -31,7 +31,7 @@ export type ComboGameData = z.infer<typeof ComboGameDataZ>;
 
 export const ComboRelationshipDataZ = z.object({
   gameid: z.number(),
-  entityid: z.string(),
+  entityid: z.number(),
   relationshiptype: z.string(),
 });
 export type ComboRelationshipData = z.infer<typeof ComboRelationshipDataZ>;

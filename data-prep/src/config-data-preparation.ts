@@ -5,7 +5,7 @@ export const dataPrepConfigs: DataPrepConfigs = {
 
   // # GameOnly will save a single JSON file of game data
   // # EntityGame will have two files, one for entities and one for games
-  SavedDataFormat: "GameOnly",
+  SavedDataFormat: "EntityGame",
 
   // # When set to false, the system will NOT hit the BGG API, but will use the already saved data
   NeedToFetch: true,

@@ -62,7 +62,7 @@ export async function prepareEntityGameData(
       let retryFetch = true;
       let rawResponseGameData = await fetchData("boardgame", bggGameID);
 
-      const rawResponseGameDataFile = `./data/game-data/game-${bggGameID}.xml`;
+      const rawResponseGameDataFile = `./src/data/game-data/game-${bggGameID}.xml`;
       if (rawResponseGameData !== undefined) {
         await fs.writeFile(rawResponseGameDataFile, rawResponseGameData);
         // Transform the game data response
@@ -174,21 +174,28 @@ export async function prepareEntityGameData(
       const entityExists = parsedEntityData.find(
         (element) => element.bggid === entity._attributes.objectid,
       );
+      let thisEntityId: number | null = null;
       if (entityExists === undefined) {
         const newEntity: ComboEntityData = {
           id: idCount++,
           bggid: entity._attributes.objectid,
           name: entity._text,
         };
+        thisEntityId = newEntity.id;
         parsedEntityData.push(newEntity);
       } else if (entityExists.name !== entity._text) {
         throw new Error(
           `We have two entities with the same BGG ID (${entityExists.bggid} and ${entity._attributes.objectid})! ${entityExists.name} and ${entity._text}`,
         );
+      } else {
+        thisEntityId = entityExists.id;
+      }
+      if (thisEntityId === undefined) {
+        throw new Error(`There is no ID for ${entityExists?.name}`);
       }
       const newRelationship = {
         gameid: thisGameId,
-        entityid: entity._attributes.objectid,
+        entityid: thisEntityId,
         relationshiptype: entity.relationshiptype,
       };
       parsedRelationshipData.push(newRelationship);

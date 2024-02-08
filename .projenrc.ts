@@ -117,6 +117,6 @@ const hydrateData = new TmsTypeScriptAppProject({
   },
 });
 
-hydrateData.addDeps("zod", "sqlite3", "prisma");
+hydrateData.addDeps("zod", "sqlite3", "prisma", "@prisma/client");
 
 project.synth();

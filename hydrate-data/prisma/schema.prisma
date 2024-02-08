@@ -9,3 +9,47 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model GameOnly {
+  id    Int     @id
+  title String
+  yearpublished Int
+  thumbnail String?
+  publisher String
+  designer String
+  description String
+  gameown Boolean
+  gamewanttobuy Boolean
+  gameprevowned Boolean
+  gamefortrade Boolean
+}
+
+model GameCombo {
+  id Int @id
+  bggid String @unique
+  title String
+  yearpublished String?
+  thumbnail String?
+  description String
+  gameown Boolean
+  gamewanttobuy Boolean
+  gameprevowned Boolean
+  gamefortrade Boolean
+  game EntityGameRelationship[]
+}
+
+model Entity {
+  id Int @id
+  bggid String @unique
+  name String
+  entity EntityGameRelationship[]
+}
+
+model EntityGameRelationship {
+  game GameCombo @relation (fields: [gameid], references: [id])
+  gameid Int
+  entity Entity @relation(fields: [entityid], references: [id])
+  entityid Int
+  relationship String
+  @@id([entityid, gameid])
+}

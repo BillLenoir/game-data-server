@@ -84,6 +84,10 @@
       "type": "build"
     },
     {
+      "name": "@prisma/client",
+      "type": "runtime"
+    },
+    {
       "name": "prisma",
       "type": "runtime"
     },

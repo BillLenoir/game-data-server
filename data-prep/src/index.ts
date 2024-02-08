@@ -6,6 +6,6 @@ const gameDataPromise = await prepareData(dataPrepConfigs.BggUser);
 
 const gameData = JSON.stringify(gameDataPromise);
 
-if (process.env.WHERE_TO_SAVE !== "locally") {
+if (dataPrepConfigs.WhereToSave !== "Locally") {
   void hydrateData(gameData).then(() => void 0);
 }

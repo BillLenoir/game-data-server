@@ -26,11 +26,7 @@ export async function prepareData(username: string) {
 
   // Save the response.
   const rawResponseFile = "./src/data/rawResponse.xml";
-  if (rawResponse != undefined) {
-    await fs.writeFile(rawResponseFile, rawResponse);
-  } else {
-    throw new Error("The raw response is undefined");
-  }
+  await fs.writeFile(rawResponseFile, rawResponse);
   console.log(
     "\x1b[32m%s\x1b[0m",
     "I wrote the raw response XML file for the collection data!",
@@ -62,13 +58,26 @@ export async function prepareData(username: string) {
     );
     return parsedGameOnlyData;
   } else if (dataPrepConfigs.SavedDataFormat === "EntityGame") {
-    const parsedGameDataFile = "./data/entitygame-gameData.json";
+    // const parsedGameDataFile = "./src/data/entitygame-gameData.json";
     const parsedEntityGameData = await prepareEntityGameData(collectionData);
-    const writableEntityGameData = JSON.stringify(parsedEntityGameData);
-    await fs.writeFile(parsedGameDataFile, writableEntityGameData);
+
+    // Changed the flow to save 3 separate files insted of one
+    const gameComboDataFile = "./src/data/game-combo-data.json";
+    const writableGameComboData = JSON.stringify(parsedEntityGameData.gamedata);
+    const entityDataFile = "./src/data/entity-data.json";
+    const writableEntityData = JSON.stringify(parsedEntityGameData.entitydata);
+    const relationshipDataFile = "./src/data/relationship-data.json";
+    const writableRelationshipData = JSON.stringify(
+      parsedEntityGameData.relationshipdata,
+    );
+    // const writableEntityGameData = JSON.stringify(parsedEntityGameData);
+    await fs.writeFile(gameComboDataFile, writableGameComboData);
+    await fs.writeFile(entityDataFile, writableEntityData);
+    await fs.writeFile(relationshipDataFile, writableRelationshipData);
+    // await fs.writeFile(parsedGameDataFile, writableEntityGameData);
     console.log(
       "\x1b[32m%s\x1b[0m",
-      "I wrote the parsed entity-game data file for the collection data!",
+      "I wrote the parsed entity-game data files for the collection data!",
     );
     return parsedEntityGameData;
   } else {
