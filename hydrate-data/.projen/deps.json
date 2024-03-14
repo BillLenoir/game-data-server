@@ -67,6 +67,10 @@
       "type": "build"
     },
     {
+      "name": "prisma",
+      "type": "build"
+    },
+    {
       "name": "projen",
       "type": "build"
     },
@@ -85,14 +89,6 @@
     },
     {
       "name": "@prisma/client",
-      "type": "runtime"
-    },
-    {
-      "name": "prisma",
-      "type": "runtime"
-    },
-    {
-      "name": "sqlite3",
       "type": "runtime"
     },
     {

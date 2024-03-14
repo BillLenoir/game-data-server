@@ -162,13 +162,13 @@
       },
       "steps": [
         {
-          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@graphql-codegen/cli,@graphql-codegen/typescript,@graphql-codegen/typescript-resolvers,@tsconfig/node18,@types/jest,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,constructs,esbuild,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,eslint,jest,jest-junit,nodemon,prettier,projen,ts-jest,typescript,@apollo/server,graphql,zod"
+          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@graphql-codegen/cli,@graphql-codegen/typescript,@graphql-codegen/typescript-resolvers,@tsconfig/node18,@types/jest,@types/node,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,constructs,esbuild,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,eslint,jest,jest-junit,nodemon,prettier,prisma,projen,ts-jest,typescript,@apollo/server,@prisma/client,graphql,zod"
         },
         {
           "exec": "npm install"
         },
         {
-          "exec": "npm update @graphql-codegen/cli @graphql-codegen/typescript @graphql-codegen/typescript-resolvers @tsconfig/node18 @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser constructs esbuild eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint jest jest-junit nodemon prettier projen ts-jest typescript @apollo/server graphql zod"
+          "exec": "npm update @graphql-codegen/cli @graphql-codegen/typescript @graphql-codegen/typescript-resolvers @tsconfig/node18 @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser constructs esbuild eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint jest jest-junit nodemon prettier prisma projen ts-jest typescript @apollo/server @prisma/client graphql zod"
         },
         {
           "exec": "npx projen"

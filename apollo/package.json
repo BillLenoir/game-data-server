@@ -39,6 +39,7 @@
     "jest-junit": "^15",
     "nodemon": "^3.0.3",
     "prettier": "^3.2.4",
+    "prisma": "^5.9.1",
     "projen": "^0.79.3",
     "ts-jest": "^29.1.2",
     "ts-node": ">=10.9.2",
@@ -46,6 +47,7 @@
   },
   "dependencies": {
     "@apollo/server": "^4.10.0",
+    "@prisma/client": "^5.9.1",
     "@tsconfig/node18": "^18.2.2",
     "graphql": "^16.8.1",
     "zod": "^3.22.4"

@@ -41,12 +41,19 @@ const apollo = new TmsTypeScriptAppProject({
   },
 });
 
-apollo.addDeps("@tsconfig/node18", "@apollo/server", "graphql", "zod");
+apollo.addDeps(
+  "@tsconfig/node18",
+  "@apollo/server",
+  "graphql",
+  "zod",
+  "@prisma/client",
+);
 apollo.addDevDeps(
   "nodemon",
   "@graphql-codegen/cli",
   "@graphql-codegen/typescript-resolvers",
   "@graphql-codegen/typescript",
+  "prisma",
 );
 apollo.tasks.addTask("start:dev", {
   description: "Start the server in development mode",
@@ -117,6 +124,7 @@ const hydrateData = new TmsTypeScriptAppProject({
   },
 });
 
-hydrateData.addDeps("zod", "sqlite3", "prisma", "@prisma/client");
+hydrateData.addDeps("zod", "@prisma/client");
+hydrateData.addDevDeps("prisma");
 
 project.synth();

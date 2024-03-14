@@ -4,18 +4,8 @@
 # from the directory above this <=======================
 
 type Query {
-
   # Return a list of games 
-  # sort: How to sort the list of games
-  # filter: How to filter the list of games
-  # cursor: Where to start to start the returned list
-  # limit: The number of games to return in the list
   findGames(cursor: String!): GameConnection
-  findGamesV2(cursor: String!): GameConnectionV2
-
-  # Return a single game specificed by title
-  game(title: String!): Game
-
 }
 
 type GameConnection {
@@ -27,38 +17,13 @@ type GameConnection {
   lastCursor: String
   games: [GameNode]
 }
-type GameConnectionV2 {
-  totalCount: Int!
-  gameNumber: Int!
-  firstCursor: String
-  prevCursor: String
-  nextCursor: String
-  lastCursor: String
-  games: [GameNodeV2]
-}
 
 type GameNode {
   game: Game!
   cursor: String!
 }
-type GameNodeV2 {
-  game: GameV2!
-  cursor: String!
-}
 
 type Game {
-  id: Int!
-  title: String
-  yearpublished: Int
-  thumbnail: String
-  publisher: String
-  description: String
-  gameown: Boolean
-  gamewanttobuy: Boolean
-  gameprevowned: Boolean
-  gamefortrade: Boolean
-}
-type GameV2 {
   id: Int!
   title: String!
   yearpublished: Int
@@ -70,6 +35,26 @@ type GameV2 {
   gamewanttobuy: Boolean
   gameprevowned: Boolean
   gamefortrade: Boolean
+}
+
+type ComboGame {
+  id: Int!
+  bggid: String!
+  title: String!
+  yearpublished: Int
+  thumbnail: String
+  description: String
+  gameown: Boolean
+  gamewanttobuy: Boolean
+  gameprevowned: Boolean
+  gamefortrade: Boolean
+  entities: [Entity]
+}
+
+type Entity {
+  id: Int!
+  bggid: String!
+  name: String!
 }
 
 type ListSize {

@@ -31,17 +31,40 @@ export type Scalars = {
   Float: { input: number; output: number };
 };
 
-export type Game = {
-  __typename?: "Game";
+export type ComboGame = {
+  __typename?: "ComboGame";
+  bggid: Scalars["String"]["output"];
   description?: Maybe<Scalars["String"]["output"]>;
+  entities?: Maybe<Array<Maybe<Entity>>>;
   gamefortrade?: Maybe<Scalars["Boolean"]["output"]>;
   gameown?: Maybe<Scalars["Boolean"]["output"]>;
   gameprevowned?: Maybe<Scalars["Boolean"]["output"]>;
   gamewanttobuy?: Maybe<Scalars["Boolean"]["output"]>;
   id: Scalars["Int"]["output"];
-  publisher?: Maybe<Scalars["String"]["output"]>;
   thumbnail?: Maybe<Scalars["String"]["output"]>;
-  title?: Maybe<Scalars["String"]["output"]>;
+  title: Scalars["String"]["output"];
+  yearpublished?: Maybe<Scalars["Int"]["output"]>;
+};
+
+export type Entity = {
+  __typename?: "Entity";
+  bggid: Scalars["String"]["output"];
+  id: Scalars["Int"]["output"];
+  name: Scalars["String"]["output"];
+};
+
+export type Game = {
+  __typename?: "Game";
+  description?: Maybe<Scalars["String"]["output"]>;
+  designer?: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
+  gamefortrade?: Maybe<Scalars["Boolean"]["output"]>;
+  gameown?: Maybe<Scalars["Boolean"]["output"]>;
+  gameprevowned?: Maybe<Scalars["Boolean"]["output"]>;
+  gamewanttobuy?: Maybe<Scalars["Boolean"]["output"]>;
+  id: Scalars["Int"]["output"];
+  publisher?: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
+  thumbnail?: Maybe<Scalars["String"]["output"]>;
+  title: Scalars["String"]["output"];
   yearpublished?: Maybe<Scalars["Int"]["output"]>;
 };
 
@@ -56,42 +79,10 @@ export type GameConnection = {
   totalCount: Scalars["Int"]["output"];
 };
 
-export type GameConnectionV2 = {
-  __typename?: "GameConnectionV2";
-  firstCursor?: Maybe<Scalars["String"]["output"]>;
-  gameNumber: Scalars["Int"]["output"];
-  games?: Maybe<Array<Maybe<GameNodeV2>>>;
-  lastCursor?: Maybe<Scalars["String"]["output"]>;
-  nextCursor?: Maybe<Scalars["String"]["output"]>;
-  prevCursor?: Maybe<Scalars["String"]["output"]>;
-  totalCount: Scalars["Int"]["output"];
-};
-
 export type GameNode = {
   __typename?: "GameNode";
   cursor: Scalars["String"]["output"];
   game: Game;
-};
-
-export type GameNodeV2 = {
-  __typename?: "GameNodeV2";
-  cursor: Scalars["String"]["output"];
-  game: GameV2;
-};
-
-export type GameV2 = {
-  __typename?: "GameV2";
-  description?: Maybe<Scalars["String"]["output"]>;
-  designer?: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  gamefortrade?: Maybe<Scalars["Boolean"]["output"]>;
-  gameown?: Maybe<Scalars["Boolean"]["output"]>;
-  gameprevowned?: Maybe<Scalars["Boolean"]["output"]>;
-  gamewanttobuy?: Maybe<Scalars["Boolean"]["output"]>;
-  id: Scalars["Int"]["output"];
-  publisher?: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  thumbnail?: Maybe<Scalars["String"]["output"]>;
-  title: Scalars["String"]["output"];
-  yearpublished?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type ListSize = {
@@ -102,20 +93,10 @@ export type ListSize = {
 export type Query = {
   __typename?: "Query";
   findGames?: Maybe<GameConnection>;
-  findGamesV2?: Maybe<GameConnectionV2>;
-  game?: Maybe<Game>;
 };
 
 export type QueryFindGamesArgs = {
   cursor: Scalars["String"]["input"];
-};
-
-export type QueryFindGamesV2Args = {
-  cursor: Scalars["String"]["input"];
-};
-
-export type QueryGameArgs = {
-  title: Scalars["String"]["input"];
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -229,12 +210,11 @@ export type DirectiveResolverFn<
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]["output"]>;
+  ComboGame: ResolverTypeWrapper<ComboGame>;
+  Entity: ResolverTypeWrapper<Entity>;
   Game: ResolverTypeWrapper<Game>;
   GameConnection: ResolverTypeWrapper<GameConnection>;
-  GameConnectionV2: ResolverTypeWrapper<GameConnectionV2>;
   GameNode: ResolverTypeWrapper<GameNode>;
-  GameNodeV2: ResolverTypeWrapper<GameNodeV2>;
-  GameV2: ResolverTypeWrapper<GameV2>;
   Int: ResolverTypeWrapper<Scalars["Int"]["output"]>;
   ListSize: ResolverTypeWrapper<ListSize>;
   Query: ResolverTypeWrapper<{}>;
@@ -244,25 +224,30 @@ export type ResolversTypes = ResolversObject<{
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars["Boolean"]["output"];
+  ComboGame: ComboGame;
+  Entity: Entity;
   Game: Game;
   GameConnection: GameConnection;
-  GameConnectionV2: GameConnectionV2;
   GameNode: GameNode;
-  GameNodeV2: GameNodeV2;
-  GameV2: GameV2;
   Int: Scalars["Int"]["output"];
   ListSize: ListSize;
   Query: {};
   String: Scalars["String"]["output"];
 }>;
 
-export type GameResolvers<
+export type ComboGameResolvers<
   ContextType = any,
   ParentType extends
-    ResolversParentTypes["Game"] = ResolversParentTypes["Game"],
+    ResolversParentTypes["ComboGame"] = ResolversParentTypes["ComboGame"],
 > = ResolversObject<{
+  bggid?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   description?: Resolver<
     Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
+  entities?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["Entity"]>>>,
     ParentType,
     ContextType
   >;
@@ -283,17 +268,12 @@ export type GameResolvers<
     ContextType
   >;
   id?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
-  publisher?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType
-  >;
   thumbnail?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
     ContextType
   >;
-  title?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  title?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   yearpublished?: Resolver<
     Maybe<ResolversTypes["Int"]>,
     ParentType,
@@ -302,100 +282,21 @@ export type GameResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type GameConnectionResolvers<
+export type EntityResolvers<
   ContextType = any,
   ParentType extends
-    ResolversParentTypes["GameConnection"] = ResolversParentTypes["GameConnection"],
+    ResolversParentTypes["Entity"] = ResolversParentTypes["Entity"],
 > = ResolversObject<{
-  firstCursor?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType
-  >;
-  gameNumber?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
-  games?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["GameNode"]>>>,
-    ParentType,
-    ContextType
-  >;
-  lastCursor?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType
-  >;
-  nextCursor?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType
-  >;
-  prevCursor?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType
-  >;
-  totalCount?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+  bggid?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type GameConnectionV2Resolvers<
+export type GameResolvers<
   ContextType = any,
   ParentType extends
-    ResolversParentTypes["GameConnectionV2"] = ResolversParentTypes["GameConnectionV2"],
-> = ResolversObject<{
-  firstCursor?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType
-  >;
-  gameNumber?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
-  games?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["GameNodeV2"]>>>,
-    ParentType,
-    ContextType
-  >;
-  lastCursor?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType
-  >;
-  nextCursor?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType
-  >;
-  prevCursor?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType
-  >;
-  totalCount?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type GameNodeResolvers<
-  ContextType = any,
-  ParentType extends
-    ResolversParentTypes["GameNode"] = ResolversParentTypes["GameNode"],
-> = ResolversObject<{
-  cursor?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  game?: Resolver<ResolversTypes["Game"], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type GameNodeV2Resolvers<
-  ContextType = any,
-  ParentType extends
-    ResolversParentTypes["GameNodeV2"] = ResolversParentTypes["GameNodeV2"],
-> = ResolversObject<{
-  cursor?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  game?: Resolver<ResolversTypes["GameV2"], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type GameV2Resolvers<
-  ContextType = any,
-  ParentType extends
-    ResolversParentTypes["GameV2"] = ResolversParentTypes["GameV2"],
+    ResolversParentTypes["Game"] = ResolversParentTypes["Game"],
 > = ResolversObject<{
   description?: Resolver<
     Maybe<ResolversTypes["String"]>,
@@ -443,6 +344,51 @@ export type GameV2Resolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type GameConnectionResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes["GameConnection"] = ResolversParentTypes["GameConnection"],
+> = ResolversObject<{
+  firstCursor?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
+  gameNumber?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+  games?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["GameNode"]>>>,
+    ParentType,
+    ContextType
+  >;
+  lastCursor?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
+  nextCursor?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
+  prevCursor?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
+  totalCount?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type GameNodeResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes["GameNode"] = ResolversParentTypes["GameNode"],
+> = ResolversObject<{
+  cursor?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  game?: Resolver<ResolversTypes["Game"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type ListSizeResolvers<
   ContextType = any,
   ParentType extends
@@ -463,27 +409,14 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryFindGamesArgs, "cursor">
   >;
-  findGamesV2?: Resolver<
-    Maybe<ResolversTypes["GameConnectionV2"]>,
-    ParentType,
-    ContextType,
-    RequireFields<QueryFindGamesV2Args, "cursor">
-  >;
-  game?: Resolver<
-    Maybe<ResolversTypes["Game"]>,
-    ParentType,
-    ContextType,
-    RequireFields<QueryGameArgs, "title">
-  >;
 }>;
 
 export type Resolvers<ContextType = any> = ResolversObject<{
+  ComboGame?: ComboGameResolvers<ContextType>;
+  Entity?: EntityResolvers<ContextType>;
   Game?: GameResolvers<ContextType>;
   GameConnection?: GameConnectionResolvers<ContextType>;
-  GameConnectionV2?: GameConnectionV2Resolvers<ContextType>;
   GameNode?: GameNodeResolvers<ContextType>;
-  GameNodeV2?: GameNodeV2Resolvers<ContextType>;
-  GameV2?: GameV2Resolvers<ContextType>;
   ListSize?: ListSizeResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
 }>;

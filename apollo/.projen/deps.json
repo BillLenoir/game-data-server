@@ -83,6 +83,10 @@
       "type": "build"
     },
     {
+      "name": "prisma",
+      "type": "build"
+    },
+    {
       "name": "projen",
       "type": "build"
     },
@@ -101,6 +105,10 @@
     },
     {
       "name": "@apollo/server",
+      "type": "runtime"
+    },
+    {
+      "name": "@prisma/client",
       "type": "runtime"
     },
     {

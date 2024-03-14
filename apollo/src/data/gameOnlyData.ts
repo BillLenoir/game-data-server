@@ -1,6 +1,6 @@
-import { GameV2 } from "../resolvers-types.js";
+import { Game } from "../resolvers-types.js";
 
-export const gamesV2: Array<GameV2> = [
+export const games: Array<Game> = [
   {
     id: 22407,
     title: "1066: End of the Dark Ages",
